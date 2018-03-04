@@ -65,25 +65,12 @@ class ChatBox extends Component {
     // Set the Conversation to the default active tab.
     this.state = {
       activeTab: 'Conversation',
-      conversation: [
-      {
-        content: "ITV plc is currently trading at 161.65.",
-         type: "user"
-       },
-       {
-         content:  "Here is the change for the top 5 risers:\n\nBAE Systems (BA.): 10 (1.75)%\nInforma (INF): 10.2 (1.49)%\nShire plc (SHP): 45.5 (1.49)%\nSt. James's Place plc (STJ): 37.5 (3.33)%\nTesco (TSCO): 5.6 (2.70)%",
-         type: "bot"
-       }
-      ]
+      conversation: []
     };
 
     this.sendMessageHandler = this.sendMessageHandler.bind(this);
     this.scrollToBottom = this.scrollToBottom.bind(this);
     this.getLatestMessageRef = this.getLatestMessageRef.bind(this);
-  }
-
-  componentDidUpdate(){
-    this.scrollToBottom();
   }
 
   getLatestMessageRef(latestMessage){
@@ -117,7 +104,7 @@ class ChatBox extends Component {
     client.textRequest(newUserMessage)
 
         // Handle any suggestions that comeback from the server.
-        
+
 
         // Embed text response onto page.
         .then((response) => {
