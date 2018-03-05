@@ -95,7 +95,8 @@ class ChatBox extends Component {
     console.log(`Adding new User Message ${newUserMessage}`);
 
     this.setState({
-      conversation: this.state.conversation.concat([new UserMessageObj(newUserMessage)])
+      conversation: this.state.conversation.concat([new UserMessageObj(newUserMessage)]),
+      suggestions: []
     }, () => {
       this.scrollToBottom();
     });
@@ -103,17 +104,19 @@ class ChatBox extends Component {
 
     client.textRequest(newUserMessage)
 
-        // Handle any suggestions that comeback from the server.
-
-
         // Embed text response onto page.
         .then((response) => {
 
-          console.log(response.result.fulfillment.messages.map(message => new BotMessageObj(message)));
+          // Log the response from DialogFlow.
+          console.log("[DialogFlow] ", response);
+
+          // Check if there are any suggestions.
+          var suggestions = (response.result.fulfillment.data && response.result.fulfillment.data.suggestion ? response.result.fulfillment.data.suggestion : []);
 
           // Add the response message to the chatbox.
           this.setState({
-            conversation: this.state.conversation.concat(response.result.fulfillment.messages.map(message => new BotMessageObj(message.speech)))
+            conversation: this.state.conversation.concat(response.result.fulfillment.messages.map(message => new BotMessageObj(message.speech))),
+            suggestions: suggestions
           }, () => {
             this.scrollToBottom();
           });
@@ -130,7 +133,7 @@ class ChatBox extends Component {
       <div style={Style.ChatBox} >
         <Header />
         <MainWindow getLatestMessageRef={this.getLatestMessageRef} conversation={this.state.conversation} activeTab={this.state.activeTab}/>
-        <Input sendMessageHandler={this.sendMessageHandler.bind(this)} activeButton={this.state.activeTab} changeTab={this.changeTab.bind(this)}/>
+        <Input suggestions={this.state.suggestions} sendMessageHandler={this.sendMessageHandler.bind(this)} activeButton={this.state.activeTab} changeTab={this.changeTab.bind(this)}/>
       </div>
     )
   }

@@ -15,6 +15,7 @@ class Message extends Component {
   render(){
     return (
         <div
+          class="message"
           style={{}}
           >
           {(this.props.messageContent ? this.props.messageContent.split('\n').map((text, i) => {
@@ -61,7 +62,10 @@ class BotMessage extends Component {
 
   render(){
     return (
-      <div ref={(el) => {this.props.getLatestMessageRef(el)}} style={{
+      <div
+      ref={(el) => {this.props.getLatestMessageRef(el)}}
+      className="botMessage"
+      style={{
         width: '60%',
         marginBottom: '15px'
       }}>

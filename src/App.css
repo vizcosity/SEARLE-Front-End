@@ -50,6 +50,12 @@ div.conversation {
   flex-direction: column;
 }
 
+/* Add some extra margin on the last child element of conversation so that
+there is room for the suggestion bar */
+div.botMessage:last-child {
+  margin-bottom: 55px !important;
+}
+
 button.inputNavButton {
   height: 50px;
   width: 50px;
@@ -79,4 +85,22 @@ button.active::before {
   border-top: 1px solid #ffda44;
   margin-top: -1px;
   transition: 0.3s ease-in-out;
+}
+
+/* Styling for suggestions. */
+button.suggestion {
+  margin: 5px;
+  padding: 10px;
+  border: 1px solid #bdbdbc;
+  border-radius: 20px;
+  font-weight: bold;
+  font-family: "Nunito", sans-serif;
+  color: #bdbdbc;
+  transition: 0.2s ease-in-out;
+}
+
+button.suggestion:hover {
+  transform: translateY(-3px);
+  background-color: #bdbdbc;
+  color: #252525;
 }
