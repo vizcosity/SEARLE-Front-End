@@ -115,7 +115,7 @@ class ChatBox extends Component {
 
           // Add the response message to the chatbox.
           this.setState({
-            conversation: this.state.conversation.concat(response.result.fulfillment.messages.map(message => new BotMessageObj(message.speech))),
+            conversation: this.state.conversation.concat(new BotMessageObj(response.result.fulfillment.speech, response.result.fulfillment.data)),
             suggestions: suggestions
           }, () => {
             this.scrollToBottom();
@@ -145,9 +145,10 @@ function UserMessageObj(userMessageText){
   this.content = userMessageText;
 }
 
-function BotMessageObj(botMessageText){
+function BotMessageObj(botMessageText, richText){
   this.type = "bot";
   this.content = botMessageText;
+  this.richText = richText;
 }
 
 export default ChatBox;

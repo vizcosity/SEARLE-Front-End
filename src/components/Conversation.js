@@ -28,6 +28,7 @@ class Conversation extends Component {
               key={i}
               getLatestMessageRef={this.props.getLatestMessageRef}
               messageContent={message.content}
+              richText={message.richText}
               timeStamp={moment().format('hh:mmA')}
             />
           );
@@ -36,7 +37,7 @@ class Conversation extends Component {
              key={i}
              getLatestMessageRef={this.props.getLatestMessageRef}
              messageContent={message.content}
-             />
+            />
           );
         })}
       </div>

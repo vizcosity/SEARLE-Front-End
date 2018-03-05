@@ -15,6 +15,37 @@ p, h1, h2, h3, h4 {
   font-family: "Nunito", sans-serif;
 }
 
+h2.articleTitle {
+  color: #cbcbcb !important;
+  margin: 0;
+  font-family: "Nunito", sans-serif;
+  font-size: 20px;
+  color: #cbcbcb !important;
+}
+
+h3.siteName {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 100;
+  color: rgba(162, 162, 162, 0.8196078431372549) !important;
+}
+
+p.articleBody {
+  margin: 0;
+  font-family: "Nunito", sans-serif;
+  color: rgba(162, 162, 162, 0.8196078431372549) !important;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+p.articleSentimentLabel {
+  margin: 15px 0px 5px;
+  font-family: "Nunito", sans-serif;
+  color: rgba(162, 162, 162, 0.8196078431372549) !important;
+  font-weight: 400;
+  font-size: 11px;
+}
+
 /* Reset input box styling */
 input, button {
   border:none;

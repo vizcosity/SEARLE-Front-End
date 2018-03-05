@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {LogoGrey} from './Logo';
+import ArticleCard from './ArticleCard';
 
 const AccentColour = '#ffda44';
 const DarkColour = '#252525';
@@ -15,7 +16,7 @@ class Message extends Component {
   render(){
     return (
         <div
-          class="message"
+          className="message"
           style={{}}
           >
           {(this.props.messageContent ? this.props.messageContent.split('\n').map((text, i) => {
@@ -84,6 +85,14 @@ class BotMessage extends Component {
           }}>{this.props.timeStamp}</p>
         </div>
         <Message align="left" messageContent={this.props.messageContent} />
+
+        {this.props.richText && this.props.richText.article ?
+          <div className="articles">
+            {this.props.richText.article.map((article, i) => {
+              return (<ArticleCard key={i} url={article.url} body={article.body} sentiment={article.sentiment} title={article.title}/>);
+            })}
+          </div>
+        : ""}
       </div>
     );
   }

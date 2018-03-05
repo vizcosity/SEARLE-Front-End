@@ -58,6 +58,7 @@
 // Sets variables (const)
 const {app, BrowserWindow, ipcMain, Tray} = require('electron')
 const path = require('path')
+const open = require('open');
 
 const assetsDirectory = path.join(__dirname, './src/assets')
 
@@ -120,6 +121,18 @@ const createWindow = () => {
       window.hide()
     }
   })
+
+  // Open links in a browser window when clicked.
+  var handleRedirect = (e, url) => {
+  if(url != webContents.getURL()) {
+    e.preventDefault()
+    require('electron').shell.openExternal(url)
+  }
+}
+
+  window.on('will-navigate', handleRedirect)
+  window.on('new-window', handleRedirect)
+
 }
 
 const toggleWindow = () => {
