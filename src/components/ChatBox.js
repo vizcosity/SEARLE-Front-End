@@ -48,7 +48,7 @@ class MainWindow extends Component {
   render(){
     return (
       <div style={Style.MainWindow}>
-        <Conversation getLatestMessageRef={this.props.getLatestMessageRef} conversation={this.props.conversation} visible={this.props.activeTab == 'Conversation'} />
+        <Conversation awaitingResponse={this.props.awaitingResponse} getLatestMessageRef={this.props.getLatestMessageRef} conversation={this.props.conversation} visible={this.props.activeTab == 'Conversation'} />
         <Settings visible={this.props.activeTab == 'Settings'} />
       </div>
     );
@@ -117,11 +117,10 @@ class ChatBox extends Component {
   // Handler for when the user sends a new message to SEARLE
   sendMessageHandler(newUserMessage){
 
-    console.log(`Adding new User Message ${newUserMessage}`);
-
     this.setState({
       conversation: this.state.conversation.concat([new UserMessageObj(newUserMessage)]),
-      suggestions: []
+      suggestions: [],
+      awaitingResponse: true
     }, () => {
       this.scrollToBottom();
     });
@@ -138,7 +137,8 @@ class ChatBox extends Component {
       // Add the response message to the chatbox.
       this.setState({
         conversation: this.state.conversation.concat(new BotMessageObj(response.result.fulfillment.speech, response.result.fulfillment.data)),
-        suggestions: suggestions
+        suggestions: suggestions,
+        awaitingResponse: false
       }, () => {
         this.scrollToBottom();
       });
@@ -151,7 +151,7 @@ class ChatBox extends Component {
     return (
       <div style={Style.ChatBox} >
         <Header />
-        <MainWindow getLatestMessageRef={this.getLatestMessageRef} conversation={this.state.conversation} activeTab={this.state.activeTab}/>
+        <MainWindow awaitingResponse={this.state.awaitingResponse} getLatestMessageRef={this.getLatestMessageRef} conversation={this.state.conversation} activeTab={this.state.activeTab}/>
         <Input suggestions={this.state.suggestions} sendMessageHandler={this.sendMessageHandler.bind(this)} activeButton={this.state.activeTab} changeTab={this.changeTab.bind(this)}/>
       </div>
     )

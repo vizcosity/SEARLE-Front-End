@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import moment from 'moment';
 import {Message, UserMessage, BotMessage} from './ChatMessage';
+import Spinner from 'react-loading';
 
 const AccentColour = '#ffda44';
 const DarkColour = '#252525';
@@ -40,6 +41,9 @@ class Conversation extends Component {
             />
           );
         })}
+
+        {this.props.awaitingResponse ? <Spinner height="32px" width="32px" color={AccentColour} name="three-bounce" /> : ""}
+
       </div>
     );
   }
