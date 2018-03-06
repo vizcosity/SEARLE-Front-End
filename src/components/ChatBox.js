@@ -11,7 +11,7 @@ import Input from './Input';
 import Header from './Header';
 import Conversation from './Conversation';
 import {UserMessage, BotMessage} from './ChatMessage';
-import Settings from './Settings';
+import Info from './Info';
 import {ApiAiClient} from "api-ai-javascript/ApiAiClient";
 
 // Create new DialogFlow Client
@@ -49,7 +49,7 @@ class MainWindow extends Component {
     return (
       <div style={Style.MainWindow}>
         <Conversation awaitingResponse={this.props.awaitingResponse} getLatestMessageRef={this.props.getLatestMessageRef} conversation={this.props.conversation} visible={this.props.activeTab == 'Conversation'} />
-        <Settings visible={this.props.activeTab == 'Settings'} />
+        <Info visible={this.props.activeTab == 'Info'} />
       </div>
     );
   }
@@ -64,7 +64,7 @@ class ChatBox extends Component {
 
     // Set the Conversation to the default active tab.
     this.state = {
-      activeTab: 'Conversation',
+      activeTab: 'Info',
       conversation: []
     };
 
@@ -99,7 +99,7 @@ class ChatBox extends Component {
 
     client.textRequest(request).then(response => {
 
-      if (count > 5) return { result: {fulfillment: {speech: "Request timed out. Try again or ask me something new."}}, ...response}
+      if (count > 5) return callback({ result: {fulfillment: {speech: "Request timed out. Try again or ask me something new."}}, ...response});
 
         // If the response is empty, run the fulfillRequest function again.
         if (!response.result.fulfillment.speech) {
