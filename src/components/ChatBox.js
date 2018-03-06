@@ -89,6 +89,31 @@ class ChatBox extends Component {
 
   }
 
+  // Fulfill Request handler.
+  // Takes in a string request and queries dialogflow.
+  // If an empty response is recieved, it retries a number of times until
+  // a proper response is recieved.
+  fulfillRequest(request, callback, count){
+
+    if (!count) count = 0;
+
+    client.textRequest(request).then(response => {
+
+      if (count > 5) return { result: {fulfillment: {speech: "Request timed out. Try again or ask me something new."}}, ...response}
+
+        // If the response is empty, run the fulfillRequest function again.
+        if (!response.result.fulfillment.speech) {
+          console.log(`No response recieved from DialogFlow. Re-trying...`);
+          return this.fulfillRequest(request, callback, count++);
+        }
+
+        // Otherwise we should have a response we can return through the
+        // callback.
+        return callback(response);
+    }).catch(err => console.log(`Error sending request to DialogFlow: ${err}`));
+
+  }
+
   // Handler for when the user sends a new message to SEARLE
   sendMessageHandler(newUserMessage){
 
@@ -101,30 +126,24 @@ class ChatBox extends Component {
       this.scrollToBottom();
     });
 
+    // fulfillRequest through DialogFlow and embed result into page.
+    this.fulfillRequest(newUserMessage, (response) => {
 
-    client.textRequest(newUserMessage)
+      // Log the response from DialogFlow.
+      console.log("[DialogFlow] ", response);
 
-        // Embed text response onto page.
-        .then((response) => {
+      // Check if there are any suggestions.
+      var suggestions = (response.result.fulfillment.data && response.result.fulfillment.data.suggestion ? response.result.fulfillment.data.suggestion : []);
 
-          // Log the response from DialogFlow.
-          console.log("[DialogFlow] ", response);
+      // Add the response message to the chatbox.
+      this.setState({
+        conversation: this.state.conversation.concat(new BotMessageObj(response.result.fulfillment.speech, response.result.fulfillment.data)),
+        suggestions: suggestions
+      }, () => {
+        this.scrollToBottom();
+      });
 
-          // Check if there are any suggestions.
-          var suggestions = (response.result.fulfillment.data && response.result.fulfillment.data.suggestion ? response.result.fulfillment.data.suggestion : []);
-
-          // Add the response message to the chatbox.
-          this.setState({
-            conversation: this.state.conversation.concat(new BotMessageObj(response.result.fulfillment.speech, response.result.fulfillment.data)),
-            suggestions: suggestions
-          }, () => {
-            this.scrollToBottom();
-          });
-
-        })
-        .catch((error) => {
-        console.log(error);
-      })
+    });
 
   }
 
