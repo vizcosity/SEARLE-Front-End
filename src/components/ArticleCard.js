@@ -13,13 +13,13 @@ export default class ArticleCard extends Component {
 
   render(){
     var sentimentNature = "neutral";
-    if (this.props.sentiment.compound > 0) sentimentNature = "positive";
-    if (this.props.sentiment.compound < 0) {
-      sentimentNature = "negative";
-      // Make sure the result is positive.
-      this.props.sentiment.compound *= -1;
-    }
     var sentimentPercentage = this.props.sentiment.compound * 100;
+    if (sentimentPercentage > 0) sentimentNature = "positive";
+    if (sentimentPercentage < 0) {
+      sentimentNature = "negative";
+      sentimentPercentage = sentimentPercentage *= -1;
+      // Make sure the result is positive.
+    }
 
     // Add http:// for url parsing if it does not already exist.
     var url = (this.props.url.indexOf('http') !== -1 ? this.props.url : "http://"+this.props.url);
