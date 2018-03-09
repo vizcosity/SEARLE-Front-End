@@ -113,7 +113,7 @@ const createWindow = () => {
         'node-integration': false
     })
     // This is where the index.html file is loaded into the window
-    window.loadURL('http://localhost:3000');
+    window.loadURL('http://searle-front-end-server.herokuapp.com/');
 
   // Hide the window when it loses focus
   window.on('blur', () => {
