@@ -13,22 +13,22 @@ export default class ArticleCard extends Component {
 
   render(){
     var sentimentNature = "neutral";
+    if (this.props.sentiment.compound > 0) sentimentNature = "positive";
     if (this.props.sentiment.compound < 0) {
       sentimentNature = "negative";
       // Make sure the result is positive.
       this.props.sentiment.compound *= -1;
     }
-    if (this.props.sentiment.compound > 0) sentimentNature = "positive";
     var sentimentPercentage = this.props.sentiment.compound * 100;
 
     // Add http:// for url parsing if it does not already exist.
     var url = (this.props.url.indexOf('http') !== -1 ? this.props.url : "http://"+this.props.url);
     console.log(url);
-    url = (url && url.split('/')[2] ? url.split('/')[2] : url);
+    var siteName = (url && url.split('/')[2] ? url.split('/')[2] : url);
 
     return (
       <a
-      href={"http://"+this.props.url} target="_blank"
+      href={url} target="_blank"
       style={{
         marginTop: '15px',
         marginBottom: '15px',
@@ -41,7 +41,7 @@ export default class ArticleCard extends Component {
         <h2
           className="articleTitle"
           >{this.props.title}</h2>
-        <h3 className="siteName">{url}</h3>
+        <h3 className="siteName">{siteName}</h3>
         <hr
           style={{
             border: '0.5px solid #9d9d9d26'

@@ -95,9 +95,13 @@ class ChatBox extends Component {
   // a proper response is recieved.
   fulfillRequest(request, callback, count){
 
+    if (!request) return callback({result: {fulfillment: {speech: "I can't send a blank message!"}}});
+
     if (!count) count = 0;
 
     client.textRequest(request).then(response => {
+
+      console.log(count);
 
       if (count > 5) return callback({ result: {fulfillment: {speech: "Request timed out. Try again or ask me something new."}}, ...response});
 
